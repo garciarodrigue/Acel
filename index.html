@@ -3,59 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización del Acelerómetro</title>
-    <style>
-        body { margin: 0; }
-    </style>
+    <title>Animación de Línea en Mapa</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.2/TweenMax.min.js"></script>
 </head>
 <body>
-    <script src="https://threejs.org/build/three.js"></script>
+    <div id="map" style="height: 400px;"></div>
 
     <script>
-        // Verificar si el navegador admite la API de Sensores
-        if ('Accelerometer' in window) {
-            const accelerometer = new Accelerometer({ frequency: 60 });
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer();
+        // Configuración del mapa
+        var map = L.map('map').setView([0, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
+        // Coordenadas de la línea
+        var lineCoordinates = [
+            [0, 0],
+            [30, 30],
+            [60, 0],
+            [90, 30]
+            // Puedes agregar más coordenadas según sea necesario
+        ];
 
-            const geometry = new THREE.BoxGeometry();
-            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-            const cube = new THREE.Mesh(geometry, material);
+        // Crear una capa de polilínea con las coordenadas iniciales
+        var polyline = L.polyline(lineCoordinates, { color: 'blue' }).addTo(map);
 
-            scene.add(cube);
-
-            camera.position.z = 5;
-
-            accelerometer.addEventListener('reading', () => {
-                // Actualizar la posición del cubo basado en los valores del acelerómetro
-                cube.rotation.x = accelerometer.x;
-                cube.rotation.y = accelerometer.y;
-                cube.rotation.z = accelerometer.z;
-
-                renderer.render(scene, camera);
-            });
-
-            // Comenzar la lectura del sensor de acelerómetro
-            accelerometer.start();
-
-            function animate() {
-                requestAnimationFrame(animate);
-
-                // Rotar el cubo continuamente (opcional)
-                cube.rotation.x += 0.01;
-                cube.rotation.y += 0.01;
-
-                renderer.render(scene, camera);
+        // Animar la línea
+        var animationSpeed = 5; // velocidad de la animación en segundos
+        var tween = TweenMax.to(polyline, animationSpeed, {
+            latLngs: lineCoordinates,
+            ease: Linear.easeNone,
+            onUpdate: function () {
+                // Actualizar el mapa mientras la línea se anima
             }
-
-            animate();
-        } else {
-            alert('El navegador no admite la API de Sensores.');
-        }
+        });
     </script>
 </body>
 </html>
