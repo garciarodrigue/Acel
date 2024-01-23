@@ -22,24 +22,24 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
-            const arrowGeometry = new THREE.ConeGeometry(0.2, 1, 32);
-            const arrowMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff, emissive: 0x00ff00, shininess: 100 });
-            const arrow = new THREE.Mesh(arrowGeometry, arrowMaterial);
+            const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+            const sphereMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff, emissive: 0x00ff00, shininess: 100 });
+            const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
-            scene.add(arrow);
-
-            // Inicializar la posición de la flecha en el centro
-            arrow.position.y = 0;
+            scene.add(sphere);
 
             // Inicializar la posición de la cámara
             camera.position.z = 5;
 
-            barometer.addEventListener('reading', () => {
-                // Escalar la posición de la flecha para hacerla más visible
-                arrow.position.y = -barometer.pressureZ * 10;
+            // Añadir una luz puntual
+            const light = new THREE.PointLight(0xffffff, 1);
+            scene.add(light);
 
-                // Ajustar la intensidad del brillo conforme al movimiento del barómetro
-                arrowMaterial.emissiveIntensity = Math.abs(barometer.pressureZ);
+            barometer.addEventListener('reading', () => {
+                // Ajustar la intensidad de la luz y el color de emisión del material conforme al movimiento del barómetro
+                const intensity = Math.abs(barometer.pressureZ) * 2; // Multiplicado por 2 para aumentar la intensidad
+                light.intensity = intensity;
+                sphereMaterial.emissiveIntensity = intensity;
 
                 renderer.render(scene, camera);
             });
