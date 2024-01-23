@@ -42,14 +42,18 @@
 			ubica.textContent = "🔜";
 		} else if (accelerometer.x.toFixed() > 0) {
     			ubica.textContent = "🔙";
-            }
+            	}
 		if (accelerometer.z.toFixed() < 0) {
 	    		ubica.textContent = "⬆️";
 		} else if (accelerometer.z.toFixed() > 0) {
 			ubica.textContent = "⬇️";
 
-	    }
-
+	    	}
+		if (accelerometer.z.toFixed() < -1) {
+    			ubica.textContent = "Atras"; // Movimiento hacia atrás
+		} else if (accelerometer.z.toFixed() > 1) {
+    			ubica.textContent = "Adelante"; // Movimiento hacia adelante
+}
             });
 
             // Comenzar la lectura de sensores
