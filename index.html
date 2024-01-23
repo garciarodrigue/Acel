@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización del Barómetro con Flecha</title>
+    <title>Visualización del Barómetro con Efecto de Luz</title>
     <style>
         body { margin: 0; overflow: hidden; }
     </style>
@@ -23,7 +23,7 @@
             document.body.appendChild(renderer.domElement);
 
             const arrowGeometry = new THREE.ConeGeometry(0.2, 1, 32);
-            const arrowMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+            const arrowMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff, emissive: 0x00ff00, shininess: 100 });
             const arrow = new THREE.Mesh(arrowGeometry, arrowMaterial);
 
             scene.add(arrow);
@@ -37,6 +37,9 @@
             barometer.addEventListener('reading', () => {
                 // Escalar la posición de la flecha para hacerla más visible
                 arrow.position.y = -barometer.pressureZ * 10;
+
+                // Ajustar la intensidad del brillo conforme al movimiento del barómetro
+                arrowMaterial.emissiveIntensity = Math.abs(barometer.pressureZ);
 
                 renderer.render(scene, camera);
             });
