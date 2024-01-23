@@ -26,7 +26,7 @@
 
             // Manejar lecturas del sensor de barómetro
             barometer.addEventListener('reading', () => {
-                document.getElementById('barometerValue').innerText = `Presión atmosférica: ${barometer.pressure} hPa`;
+                document.getElementById('barometerValue').innerText = `Presión atmosférica: ${barometer.pressureZ} hPa`;
             });
 
             // Manejar lecturas del sensor de acelerómetro
