@@ -22,11 +22,11 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
-            const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-            const sphereMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff, emissive: 0x00ff00, shininess: 100 });
-            const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            const circleGeometry = new THREE.CircleGeometry(0.5, 32);
+            const circleMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff, emissive: 0x00ff00, shininess: 100 });
+            const circle = new THREE.Mesh(circleGeometry, circleMaterial);
 
-            scene.add(sphere);
+            scene.add(circle);
 
             // Inicializar la posición de la cámara
             camera.position.z = 5;
@@ -39,7 +39,7 @@
                 // Ajustar la intensidad de la luz y el color de emisión del material conforme al movimiento del barómetro
                 const intensity = Math.abs(barometer.pressureZ) * 2; // Multiplicado por 2 para aumentar la intensidad
                 light.intensity = intensity;
-                sphereMaterial.emissiveIntensity = intensity;
+                circleMaterial.emissiveIntensity = intensity;
 
                 renderer.render(scene, camera);
             });
