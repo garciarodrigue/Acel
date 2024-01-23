@@ -16,6 +16,7 @@
     <div>
         <h2>Acelerómetro</h2>
         <p id="accelerometerValues">Esperando lectura...</p>
+	<h4 id="ubica">Direccion</h4>
     </div>
 
     <script>
@@ -38,7 +39,8 @@
                 `;
 
 		if (accelerometer.x.toFixed() < 0) {
-    			alert("Movimiento hacia la izquierda");
+			var ubica = document.getElementById('ubica');
+			miH1.textContent = "Izquierda";
 		} else if (accelerometer.x.toFixed() > 0) {
     			alert("Movimiento hacia la derecha");
 		}
