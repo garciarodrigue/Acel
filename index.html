@@ -3,84 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización del Movimiento con CSS</title>
-    <style>
-        body { 
-            margin: 0; 
-            overflow: hidden; 
-            height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background-color: #f0f0f0; 
-        }
-        #person { 
-            width: 50px; 
-            height: 50px; 
-            position: relative; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-        }
-        #head, #body { 
-            width: 50px; 
-            height: 25px; 
-            background-color: #2196F3; 
-            position: absolute; 
-        }
-        #body { top: 25px; }
-        #directions { 
-            position: absolute; 
-            bottom: -40px; 
-            font-weight: bold; 
-            display: flex; 
-            justify-content: space-between; 
-            width: 100%; 
-            padding: 0 10px; 
-        }
-    </style>
+    <title>Sensores</title>
 </head>
 <body>
-    <div id="person">
-        <div id="head"></div>
-        <div id="body"></div>
+    <h1>Lectura de Sensores</h1>
+
+    <div>
+        <h2>Barómetro</h2>
+        <p id="barometerValue">Esperando lectura...</p>
     </div>
-    <div id="directions">
-        <div id="directionX">X: </div>
-        <div id="directionY">Y: </div>
-        <div id="directionZ">Z: </div>
+
+    <div>
+        <h2>Acelerómetro</h2>
+        <p id="accelerometerValues">Esperando lectura...</p>
     </div>
 
     <script>
-        // Verificar si el navegador admite la API de Device Motion
-        if ('ondevicemotion' in window) {
-            window.addEventListener('devicemotion', handleMotion);
+        // Verificar si el navegador admite la API de Sensores
+        if ('AbsoluteOrientationSensor' in window) {
+            const barometer = new AbsoluteOrientationSensor({ frequency: 60 });
+            const accelerometer = new Accelerometer({ frequency: 60 });
+
+            // Manejar lecturas del sensor de barómetro
+            barometer.addEventListener('reading', () => {
+                document.getElementById('barometerValue').innerText = `Presión atmosférica: ${barometer.pressureZ} hPa`;
+            });
+
+            // Manejar lecturas del sensor de acelerómetro
+            accelerometer.addEventListener('reading', () => {
+                document.getElementById('accelerometerValues').innerText = `
+                    Aceleración X: ${accelerometer.x.toFixed(2)} m/s²,
+                    Aceleración Y: ${accelerometer.y.toFixed(2)} m/s²,
+                    Aceleración Z: ${accelerometer.z.toFixed(2)} m/s²
+                `;
+            });
+
+            // Comenzar la lectura de sensores
+            barometer.start();
+            accelerometer.start();
         } else {
-            alert('El navegador no admite la API de Device Motion.');
-        }
-
-        function handleMotion(event) {
-            // Ajustar el color del personaje conforme al movimiento en los ejes X, Y y Z
-            const intensityX = Math.abs(event.accelerationIncludingGravity.x) / 10;
-            const intensityY = Math.abs(event.accelerationIncludingGravity.y) / 10;
-            const intensityZ = Math.abs(event.accelerationIncludingGravity.z) / 10;
-
-            const maxIntensity = Math.max(intensityX, intensityY, intensityZ);
-
-            let hue = 120 + maxIntensity * 120; // Cambiar el tono de verde a rojo
-            document.getElementById('person').style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
-
-            // Actualizar la dirección en los ejes X, Y y Z
-            updateDirection('X', event.accelerationIncludingGravity.x);
-            updateDirection('Y', event.accelerationIncludingGravity.y);
-            updateDirection('Z', event.accelerationIncludingGravity.z);
-        }
-
-        function updateDirection(axis, value) {
-            const directionElement = document.getElementById(`direction${axis}`);
-            const direction = value > 0 ? `+${axis}` : `-${axis}`;
-            directionElement.innerText = `${axis}: ${direction}`;
+            alert('El navegador no admite la API de Sensores.');
         }
     </script>
 </body>
