@@ -3,44 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensores</title>
+    <title>Visualización del Acelerómetro</title>
+    <style>
+        body { margin: 0; }
+    </style>
 </head>
 <body>
-    <h1 style="color: white;">Lectura de Sensores</h1>
-
-    <div>
-        <h2 style="color: red;">Barómetro</h2>
-        <p style="color:blue;" id="barometerValue">Esperando lectura...</p>
-    </div>
-
-    <div>
-        <h2 style="color: white;">Acelerómetro</h2>
-        <p style="color:blue;" id="accelerometerValues">Esperando lectura...</p>
-    </div>
+    <script src="https://threejs.org/build/three.js"></script>
 
     <script>
         // Verificar si el navegador admite la API de Sensores
-        if ('AbsoluteOrientationSensor' in window) {
-            const barometer = new AbsoluteOrientationSensor({ frequency: 60 });
+        if ('Accelerometer' in window) {
             const accelerometer = new Accelerometer({ frequency: 60 });
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
 
-            // Manejar lecturas del sensor de barómetro
-            barometer.addEventListener('reading', () => {
-                document.getElementById('barometerValue').innerText = `Presión atmosférica: ${barometer.pressureZ} hPa`;
-            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
 
-            // Manejar lecturas del sensor de acelerómetro
+            const geometry = new THREE.BoxGeometry();
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            const cube = new THREE.Mesh(geometry, material);
+
+            scene.add(cube);
+
+            camera.position.z = 5;
+
             accelerometer.addEventListener('reading', () => {
-                document.getElementById('accelerometerValues').innerText = `
-                    Aceleración X: ${accelerometer.x.toFixed(2)} m/s²,
-                    Aceleración Y: ${accelerometer.y.toFixed(2)} m/s²,
-                    Aceleración Z: ${accelerometer.z.toFixed(2)} m/s²
-                `;
+                // Actualizar la posición del cubo basado en los valores del acelerómetro
+                cube.rotation.x = accelerometer.x;
+                cube.rotation.y = accelerometer.y;
+                cube.rotation.z = accelerometer.z;
+
+                renderer.render(scene, camera);
             });
 
-            // Comenzar la lectura de sensores
-            barometer.start();
+            // Comenzar la lectura del sensor de acelerómetro
             accelerometer.start();
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // Rotar el cubo continuamente (opcional)
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
         } else {
             alert('El navegador no admite la API de Sensores.');
         }
