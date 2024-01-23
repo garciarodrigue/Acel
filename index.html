@@ -3,52 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización del Barómetro</title>
+    <title>Visualización del Barómetro con CSS</title>
     <style>
-        body { margin: 0; overflow: hidden; }
+        body { margin: 0; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; }
+        #person { width: 50px; height: 50px; background-color: #4CAF50; position: relative; }
+        #head, #body { width: 50px; height: 25px; background-color: #2196F3; position: absolute; }
+        #body { top: 25px; }
     </style>
 </head>
 <body>
-    <script src="https://threejs.org/build/three.js"></script>
+    <div id="person">
+        <div id="head"></div>
+        <div id="body"></div>
+    </div>
 
     <script>
         // Verificar si el navegador admite la API de Sensores
         if ('AbsoluteOrientationSensor' in window) {
             const barometer = new AbsoluteOrientationSensor({ frequency: 60 });
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-            const renderer = new THREE.WebGLRenderer();
-
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
-
-            const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-            const cubeMaterial = new THREE.MeshBasicMaterial();
-            const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-
-            scene.add(cube);
-
-            // Inicializar la posición de la cámara
-            camera.position.z = 5;
+            const person = document.getElementById('person');
 
             barometer.addEventListener('reading', () => {
-                // Ajustar el color del cubo conforme al movimiento del barómetro
+                // Ajustar el color del personaje conforme al movimiento del barómetro
                 const intensity = Math.abs(barometer.pressureZ);
-                const color = new THREE.Color(1 - intensity, intensity, 0);
-                cubeMaterial.color = color;
-
-                renderer.render(scene, camera);
+                const hue = 120 + intensity * 120; // Cambiar el tono de verde a rojo
+                person.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
             });
 
             // Comenzar la lectura del sensor de barómetro
             barometer.start();
-
-            function animate() {
-                requestAnimationFrame(animate);
-                renderer.render(scene, camera);
-            }
-
-            animate();
         } else {
             alert('El navegador no admite la API de Sensores.');
         }
