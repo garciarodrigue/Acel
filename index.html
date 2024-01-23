@@ -37,13 +37,12 @@
                     Aceleración Y: ${accelerometer.y.toFixed(2)} m/s²,
                     Aceleración Z: ${accelerometer.z.toFixed(2)} m/s²
                 `;
-
+		var ubica = document.getElementById('ubica');
 		if (accelerometer.x.toFixed() < 0) {
-			var ubica = document.getElementById('ubica');
 			ubica.textContent = "Izquierda";
 		} else if (accelerometer.x.toFixed() > 0) {
-    			alert("Movimiento hacia la derecha");
-		}
+    			ubica.textContent = "Derecha";
+            }
 
             });
 
