@@ -5,30 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualización del Movimiento con CSS</title>
     <style>
-        body { margin: 0; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; }
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background-color: #f0f0f0; 
+        }
         #person { 
             width: 50px; 
             height: 50px; 
-            background-color: #4CAF50; 
             position: relative; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center;
         }
-        #head, #body { width: 50px; height: 25px; background-color: #2196F3; position: absolute; }
+        #head, #body { 
+            width: 50px; 
+            height: 25px; 
+            background-color: #2196F3; 
+            position: absolute; 
+        }
         #body { top: 25px; }
-        .direction { position: absolute; bottom: 0; font-weight: bold; display: flex; }
-        .direction div { margin: 0 5px; }
+        #directions { 
+            position: absolute; 
+            bottom: -40px; 
+            font-weight: bold; 
+            display: flex; 
+            justify-content: space-between; 
+            width: 100%; 
+            padding: 0 10px; 
+        }
     </style>
 </head>
 <body>
     <div id="person">
         <div id="head"></div>
         <div id="body"></div>
-        <div class="direction" id="directionX">X: </div>
-        <div class="direction" id="directionY">Y: </div>
-        <div class="direction" id="directionZ">Z: </div>
+    </div>
+    <div id="directions">
+        <div id="directionX">X: </div>
+        <div id="directionY">Y: </div>
+        <div id="directionZ">Z: </div>
     </div>
 
     <script>
