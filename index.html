@@ -40,9 +40,14 @@
         }
 
         function handleMotion(event) {
-            // Ajustar el color del personaje conforme al movimiento en el plano XY
-            const intensity = Math.sqrt(event.accelerationIncludingGravity.x ** 2 + event.accelerationIncludingGravity.y ** 2) / 10;
-            const hue = 120 + intensity * 120; // Cambiar el tono de verde a rojo
+            // Ajustar el color del personaje conforme al movimiento en los ejes X, Y y Z
+            const intensityX = Math.abs(event.accelerationIncludingGravity.x) / 10;
+            const intensityY = Math.abs(event.accelerationIncludingGravity.y) / 10;
+            const intensityZ = Math.abs(event.accelerationIncludingGravity.z) / 10;
+
+            const maxIntensity = Math.max(intensityX, intensityY, intensityZ);
+
+            let hue = 120 + maxIntensity * 120; // Cambiar el tono de verde a rojo
             document.getElementById('person').style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
 
             // Actualizar la dirección en los ejes X, Y y Z
