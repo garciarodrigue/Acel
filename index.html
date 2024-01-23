@@ -16,7 +16,7 @@
         if ('AbsoluteOrientationSensor' in window) {
             const barometer = new AbsoluteOrientationSensor({ frequency: 60 });
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
             const renderer = new THREE.WebGLRenderer();
 
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -28,11 +28,15 @@
 
             scene.add(arrow);
 
+            // Inicializar la posición de la flecha en el centro
+            arrow.position.y = 0;
+
+            // Inicializar la posición de la cámara
             camera.position.z = 5;
 
             barometer.addEventListener('reading', () => {
-                // Mover la flecha verticalmente basada en la lectura del barómetro
-                arrow.position.y = -barometer.pressureZ;
+                // Escalar la posición de la flecha para hacerla más visible
+                arrow.position.y = -barometer.pressureZ * 10;
 
                 renderer.render(scene, camera);
             });
