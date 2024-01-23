@@ -36,10 +36,11 @@
                     Aceleración Y: ${accelerometer.y.toFixed(2)} m/s²,
                     Aceleración Z: ${accelerometer.z.toFixed(2)} m/s²
                 `;
-		    if (accelerometer.x.toFixed() < 0) {
+
+		if (accelerometer.x.toFixed() < 0) {
     			alert("Movimiento hacia la izquierda");
-			} else if (accelerometer.x.toFixed() > 0) {
-    				alert("Movimiento hacia la derecha");
+		} else if (accelerometer.x.toFixed() > 0) {
+    			alert("Movimiento hacia la derecha");
 		}
 
             });
