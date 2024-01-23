@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización del Barómetro con Efecto de Luz</title>
+    <title>Visualización del Barómetro</title>
     <style>
         body { margin: 0; overflow: hidden; }
     </style>
@@ -22,24 +22,20 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
-            const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
-            const cylinderMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff, emissive: 0x00ff00, shininess: 100 });
-            const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+            const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+            const cubeMaterial = new THREE.MeshBasicMaterial();
+            const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
-            scene.add(cylinder);
+            scene.add(cube);
 
             // Inicializar la posición de la cámara
             camera.position.z = 5;
 
-            // Añadir una luz puntual
-            const light = new THREE.PointLight(0xffffff, 1);
-            scene.add(light);
-
             barometer.addEventListener('reading', () => {
-                // Ajustar la intensidad de la luz y el color de emisión del material conforme al movimiento del barómetro
-                const intensity = Math.abs(barometer.pressureZ) * 2; // Multiplicado por 2 para aumentar la intensidad
-                light.intensity = intensity;
-                cylinderMaterial.emissiveIntensity = intensity;
+                // Ajustar el color del cubo conforme al movimiento del barómetro
+                const intensity = Math.abs(barometer.pressureZ);
+                const color = new THREE.Color(1 - intensity, intensity, 0);
+                cubeMaterial.color = color;
 
                 renderer.render(scene, camera);
             });
