@@ -3,40 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animación de Línea en Mapa</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.2/TweenMax.min.js"></script>
+    <title>Visualización del Barómetro con Flecha</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+    </style>
 </head>
 <body>
-    <div id="map" style="height: 400px;"></div>
+    <script src="https://threejs.org/build/three.js"></script>
 
     <script>
-        // Configuración del mapa
-        var map = L.map('map').setView([0, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        // Verificar si el navegador admite la API de Sensores
+        if ('AbsoluteOrientationSensor' in window) {
+            const barometer = new AbsoluteOrientationSensor({ frequency: 60 });
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
 
-        // Coordenadas de la línea
-        var lineCoordinates = [
-            [0, 0],
-            [30, 30],
-            [60, 0],
-            [90, 30]
-            // Puedes agregar más coordenadas según sea necesario
-        ];
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
 
-        // Crear una capa de polilínea con las coordenadas iniciales
-        var polyline = L.polyline(lineCoordinates, { color: 'blue' }).addTo(map);
+            const arrowGeometry = new THREE.ConeGeometry(0.2, 1, 32);
+            const arrowMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+            const arrow = new THREE.Mesh(arrowGeometry, arrowMaterial);
 
-        // Animar la línea
-        var animationSpeed = 5; // velocidad de la animación en segundos
-        var tween = TweenMax.to(polyline, animationSpeed, {
-            latLngs: lineCoordinates,
-            ease: Linear.easeNone,
-            onUpdate: function () {
-                // Actualizar el mapa mientras la línea se anima
+            scene.add(arrow);
+
+            camera.position.z = 5;
+
+            barometer.addEventListener('reading', () => {
+                // Mover la flecha verticalmente basada en la lectura del barómetro
+                arrow.position.y = -barometer.pressureZ;
+
+                renderer.render(scene, camera);
+            });
+
+            // Comenzar la lectura del sensor de barómetro
+            barometer.start();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
             }
-        });
+
+            animate();
+        } else {
+            alert('El navegador no admite la API de Sensores.');
+        }
     </script>
 </body>
 </html>
