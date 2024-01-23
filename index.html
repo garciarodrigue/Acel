@@ -16,7 +16,7 @@
     <div>
         <h2>Acelerómetro</h2>
         <p id="accelerometerValues">Esperando lectura...</p>
-	<h4 id="ubica">Direccion</h4>
+	<h1 id="ubica">Direccion</h1>
     </div>
 
     <script>
@@ -43,6 +43,12 @@
 		} else if (accelerometer.x.toFixed() > 0) {
     			ubica.textContent = "🔙";
             }
+		if (accelerometer.z.toFixed() < 0) {
+	    		ubica.textContent = "⬆️";
+		} else if (accelerometer.z.toFixed() > 0) {
+			ubica.textContent = "⬇️";
+
+	    }
 
             });
 
