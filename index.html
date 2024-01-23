@@ -16,7 +16,11 @@
     <div>
         <h2>Acelerómetro</h2>
         <p id="accelerometerValues">Esperando lectura...</p>
-	<h1 id="ubica">Direccion</h1>
+	<h1 id="lados">lados</h1>
+	<br>
+	<h1 id="frentes">frentes</h1>
+	<br>
+	<h1 id="altura">altura</h1>
     </div>
 
     <script>
@@ -37,22 +41,24 @@
                     Aceleración Y: ${accelerometer.y.toFixed(2)} m/s²,
                     Aceleración Z: ${accelerometer.z.toFixed(2)} m/s²
                 `;
-		var ubica = document.getElementById('ubica');
+		var frentes = document.getElementById('frentes');
+		var altura = document.getElementById('altura');
+		var lados = document.getElementById('lados');
 		if (accelerometer.x.toFixed() < 0) {
-			ubica.textContent = "🔜";
+			lados.textContent = "🔜";
 		} else if (accelerometer.x.toFixed() > 0) {
-    			ubica.textContent = "🔙";
+    			lados.textContent = "🔙";
             	}
 		if (accelerometer.z.toFixed() < 0) {
-	    		ubica.textContent = "⬆️";
+	    		altura.textContent = "⬆️";
 		} else if (accelerometer.z.toFixed() > 0) {
-			ubica.textContent = "⬇️";
+			altura.textContent = "⬇️";
 
 	    	}
 		if (accelerometer.z.toFixed() < -1) {
-    			ubica.textContent = "Atras"; // Movimiento hacia atrás
+    			frentes.textContent = "Atras"; // Movimiento hacia atrás
 		} else if (accelerometer.z.toFixed() > 1) {
-    			ubica.textContent = "Adelante"; // Movimiento hacia adelante
+    			frentes.textContent = "Adelante"; // Movimiento hacia adelante
 }
             });
 
