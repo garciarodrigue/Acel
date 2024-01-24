@@ -60,7 +60,7 @@
 		} else if (accelerometer.z.toFixed() > 3) {
     			frentes.textContent = "Adelante"; // Movimiento hacia adelante
 
-		}else if (accelerometer.z.toFixed() = 0){
+		}else if (accelerometer.z.toFixed() < 1){
 			frentes.textContent = "stop";
 		}
             });
