@@ -46,20 +46,23 @@
 		var lados = document.getElementById('lados');
 		if (accelerometer.x.toFixed() < 0) {
 			lados.textContent = "🔜";
-		} else if (accelerometer.x.toFixed() > 0) {
+		} else if (accelerometer.x.toFixed() > 3) {
     			lados.textContent = "🔙";
             	}
 		if (accelerometer.z.toFixed() < 0) {
 	    		altura.textContent = "⬆️";
-		} else if (accelerometer.z.toFixed() > 0) {
+		} else if (accelerometer.z.toFixed() > 1) {
 			altura.textContent = "⬇️";
 
 	    	}
 		if (accelerometer.z.toFixed() < -1) {
     			frentes.textContent = "Atras"; // Movimiento hacia atrás
-		} else if (accelerometer.z.toFixed() > 1) {
+		} else if (accelerometer.z.toFixed() > 3) {
     			frentes.textContent = "Adelante"; // Movimiento hacia adelante
-}
+
+		}else if (accelerometer.z.toFixed() == 0){
+			frentes.textContent = "stop";
+		}
             });
 
             // Comenzar la lectura de sensores
