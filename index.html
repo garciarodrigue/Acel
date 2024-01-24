@@ -37,9 +37,9 @@
             // Manejar lecturas del sensor de acelerómetro
             accelerometer.addEventListener('reading', () => {
                 document.getElementById('accelerometerValues').innerText = `
-                    Aceleración X: ${accelerometer.x.toFixed(2)} m/s²,
-                    Aceleración Y: ${accelerometer.y.toFixed(2)} m/s²,
-                    Aceleración Z: ${accelerometer.z.toFixed(2)} m/s²
+                    lados: ${accelerometer.x.toFixed(2)} m/s²,
+                    altuta: ${accelerometer.y.toFixed(2)} m/s²,
+                    frente: ${accelerometer.z.toFixed(2)} m/s²
                 `;
                 
                 var frentes = document.getElementById('frentes');
@@ -56,11 +56,11 @@
                     lados.textContent = "🔙"; // Movimiento hacia la derecha
                 }
 
-                if (Math.abs(accelerometer.z.toFixed()) < threshold) {
+                if (Math.abs(accelerometer.y.toFixed()) < threshold) {
                     altura.textContent = "🔒"; // Posición estática en el eje Z
-                } else if (accelerometer.z.toFixed() < 0) {
+                } else if (accelerometer.y.toFixed() < 0) {
                     altura.textContent = "⬆️"; // Movimiento hacia arriba
-                } else if (accelerometer.z.toFixed() > 0) {
+                } else if (accelerometer.y.toFixed() > 0) {
                     altura.textContent = "⬇️"; // Movimiento hacia abajo
                 }
 
@@ -70,7 +70,7 @@
                     frentes.textContent = "Atras"; // Movimiento hacia atrás
                 } else if (accelerometer.z.toFixed() > 0.9) {
                     frentes.textContent = "Adelante"; // Movimiento hacia adelante
-                } else if (Math.abs(accelerometer.z.toFixed()) < 0.5) {
+                } else if (Math.abs(accelerometer.z.toFixed()) < 0.10) {
                     frentes.textContent = "stop"; // Posición estática en el eje Z
                 }
             });
