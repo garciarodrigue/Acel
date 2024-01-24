@@ -50,9 +50,9 @@
 
                 if (Math.abs(accelerometer.x.toFixed()) < threshold) {
                     lados.textContent = "🔒"; // Posición estática en el eje X
-                } else if (accelerometer.x.toFixed() < 0) {
+                } else if (accelerometer.x.toFixed() < -1) {
                     lados.textContent = "🔜"; // Movimiento hacia la izquierda
-                } else if (accelerometer.x.toFixed() > 0) {
+                } else if (accelerometer.x.toFixed() > 1) {
                     lados.textContent = "🔙"; // Movimiento hacia la derecha
                 }
 
@@ -68,9 +68,9 @@
                     frentes.textContent = "🔒"; // Posición estática en el eje Z
                 } else if (accelerometer.z.toFixed() < -0.9) {
                     frentes.textContent = "Atras"; // Movimiento hacia atrás
-                } else if (accelerometer.z.toFixed() > 4.9) {
+                } else if (accelerometer.z.toFixed() > 9.90) {
                     frentes.textContent = "Adelante"; // Movimiento hacia adelante
-                } else if (Math.abs(accelerometer.z.toFixed()) < 4.10) {
+                } else if (Math.abs(accelerometer.z.toFixed()) < 9.70) {
                     frentes.textContent = "stop"; // Posición estática en el eje Z
                 }
             });
