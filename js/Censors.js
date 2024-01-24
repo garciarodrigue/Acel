@@ -8,7 +8,7 @@ const firebaseConfig = {
     messagingSenderId: "64728146009",
     appId: "1:64728146009:web:9d40a62dc002da845fd148"
 };
-
+//https://doxdog-68f97-default-rtdb.firebaseio.com/
 firebase.initializeApp(firebaseConfig);
 
 // Referencia a la base de datos en tiempo real de Firebase
