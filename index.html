@@ -68,9 +68,9 @@
                     frentes.textContent = "🔒"; // Posición estática en el eje Z
                 } else if (accelerometer.z.toFixed() < -0.9) {
                     frentes.textContent = "Atras"; // Movimiento hacia atrás
-                } else if (accelerometer.z.toFixed() > 3.9) {
+                } else if (accelerometer.z.toFixed() > 4.9) {
                     frentes.textContent = "Adelante"; // Movimiento hacia adelante
-                } else if (Math.abs(accelerometer.z.toFixed()) < 2.10) {
+                } else if (Math.abs(accelerometer.z.toFixed()) < 4.10) {
                     frentes.textContent = "stop"; // Posición estática en el eje Z
                 }
             });
